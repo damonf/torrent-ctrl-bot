@@ -1,0 +1,92 @@
+[tool.poetry]
+name = "c2-telegram-bot"
+version = "0.1.0"
+description = ""
+authors = ["damon <damonf@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "c2_telegram_bot", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-telegram-bot = "^20.3"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.3.2"
+coverage = {extras = ["toml"], version = "^7.2.7"}
+pytest-cov = "^4.1.0"
+pylint = "^2.17.4"
+flake8 = "^6.0.0"
+black = "^23.3.0"
+isort = "^5.12.0"
+pytest-mock = "^3.11.1"
+pytest-asyncio = "^0.21.0"
+mypy = "^1.4.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poe.tasks]
+
+  [tool.poe.tasks.test]
+  help = "Run unit tests"
+  cmd  = "pytest --cov=c2_telegram_bot"
+
+  [tool.poe.tasks.pylint]
+  help = "Run the pylint"
+  cmd  = "pylint src/"
+
+  [tool.poe.tasks.flake8]
+  help = "Run the flake8 linter"
+  cmd  = "flake8 src/ tests/"
+
+  [tool.poe.tasks.style-black]
+  help = "Validate black code style"
+  cmd  = "black . --check --diff"
+
+  [tool.poe.tasks.style-isort]
+  help = "Validate isort code style"
+  cmd  = "isort . --check --diff"
+
+  [tool.poe.tasks.style]
+  help = "Validate code style"
+  sequence = ["style-isort", "style-black"]
+
+  [tool.poe.tasks.format-isort]
+  help = "Run isort on the code base"
+  cmd  = "isort ."
+
+  [tool.poe.tasks.format-black]
+  help = "Run black on the code base"
+  cmd  = "black ."
+
+  [tool.poe.tasks.format]
+  help     = "Run formating tools on the code base"
+  sequence = ["format-isort", "format-black"]
+
+  [tool.poe.tasks.mypy]
+  help = "Run type hints checking"
+  cmd  = "mypy ."
+
+  [tool.poe.tasks.check]
+  help     = "Run all checks on the code base"
+  sequence = ["style", "mypy", "pylint", "flake8", "test"]
+
+  [tool.poe.tasks.run]
+  help   = "Run the program"
+  env    = { 'ENV'='TEST', 'TORRENT_HOST'='torrents.com', 'TORRENT_PWD'= 'lame' }
+  script = "c2_telegram_bot.main:main"
+
+[tool.coverage.paths]
+source = ["src", "*/site-packages"]
+
+[tool.coverage.run]
+source = ["c2_telegram_bot"]
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.isort]
+profile = "black"
+
