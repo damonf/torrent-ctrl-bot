@@ -1,11 +1,10 @@
 import logging
-import os
-import sys
 from functools import partial
 
 from telegram.ext import ApplicationBuilder
 
 from c2_telegram_bot.command_handler_builder import CommandHandlerBuilder
+from c2_telegram_bot.environ_var import EnvironVar
 from c2_telegram_bot.message_handler_builder import MessageHandlerBuilder
 
 from .commands.command_help import CommandHelp
@@ -21,18 +20,11 @@ logging.basicConfig(
 
 
 def main():
-    def environ_get(name: str) -> str:
-        var = os.environ.get(name)
-        if var is None:
-            print(f"{name} not set", file=sys.stderr)
-            exit(1)
-        return var
+    application = ApplicationBuilder().token(EnvironVar("TOKEN").get()).build()
 
-    application = ApplicationBuilder().token(environ_get("TOKEN")).build()
+    shell_exec_env = partial(shell_exec, env=EnvironVar("ENV").get())
 
-    shell_exec_env = partial(shell_exec, env=environ_get("ENV"))
-
-    torrent_host = TorrentHost(environ_get("TORRENT_HOST"), environ_get("TORRENT_PWD"))
+    torrent_host = TorrentHost(EnvironVar("TORRENT_HOST").get(), EnvironVar("TORRENT_PWD").get())
 
     command_handlers = [
         ListTorrents(shell_exec_env, torrent_host),

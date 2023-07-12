@@ -14,6 +14,10 @@ class BotContext:
             await self._context.bot.send_message(chat_id=chat_id, text=message)
 
     @property
+    def user_id(self):
+        return getattr(self._update.message.from_user, "id", None)
+
+    @property
     def message_text(self):
         return self._update.message.text
 

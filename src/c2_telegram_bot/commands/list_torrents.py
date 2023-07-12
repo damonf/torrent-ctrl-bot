@@ -14,11 +14,11 @@ class ListTorrents:
         self._torrent_host = torrent_host
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name
 
     @property
-    def description(self):
+    def description(self) -> str:
         return self._description
 
     async def handle(self, context: BotContext):

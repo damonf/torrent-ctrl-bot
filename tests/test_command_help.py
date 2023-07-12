@@ -1,5 +1,3 @@
-import asyncio
-
 import pytest
 
 from c2_telegram_bot.commands.command_help import CommandHelp
@@ -7,17 +5,8 @@ from c2_telegram_bot.commands.command_help import CommandHelp
 pytest_plugins = ("pytest_asyncio",)
 
 
-def async_return(result):
-    f = asyncio.Future()
-    f.set_result(result)
-    return f
-
-
 @pytest.mark.asyncio
-async def test_sample(mocker):
-    bot_context = mocker.Mock()
-    bot_context.send_message.return_value = async_return(None)
-
+async def test_help_text(bot_context, mocker):
     cmd1 = mocker.Mock()
     cmd1.name = "cmd1"
     cmd1.description = "desc1"
