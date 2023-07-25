@@ -7,5 +7,5 @@ def async_return(result):
     return f
 
 
-def shell_exec_stub(cmd: str) -> tuple[str, str]:
+def shell_exec_stub(cmd: str) -> tuple[str, str]:  # type: ignore
     pass

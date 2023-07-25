@@ -4,10 +4,9 @@ from c2_telegram_bot.interfaces.command_handler_interface import CommandHandlerI
 
 
 class CommandHandlerAccess:
-
     def __init__(self, command_handler: CommandHandlerInterface):
         self._cmd_hnd = command_handler
-        self._user_id = EnvironVar('USER_ID').get()
+        self._user_id = EnvironVar("USER_ID").get()
 
     @property
     def name(self) -> str:

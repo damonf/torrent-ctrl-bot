@@ -10,7 +10,7 @@ def shell_exec(command_string: str, env: str) -> tuple[str, str]:
     """run a shell command and return its output"""
 
     if env == "TEST":
-        return command_string, ""
+        return "", command_string
 
     error = output = ""
 

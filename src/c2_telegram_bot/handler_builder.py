@@ -12,7 +12,6 @@ HCB = Callable[
 
 
 class HandlerBuilder:
-
     @staticmethod
     def create_handler_callback(cmd_hnd: HandlerInterface) -> HCB:
         async def handler(update: Update, context: ContextTypes.DEFAULT_TYPE):

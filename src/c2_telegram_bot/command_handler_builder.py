@@ -6,9 +6,6 @@ from c2_telegram_bot.interfaces.command_handler_interface import CommandHandlerI
 
 
 class CommandHandlerBuilder(HandlerBuilder):
-
     def build(self, command_handler: CommandHandlerInterface) -> CommandHandler:
         decorated = CommandHandlerAccess(command_handler)
-        return CommandHandler(
-            decorated.name, self.create_handler_callback(decorated)
-        )
+        return CommandHandler(decorated.name, self.create_handler_callback(decorated))

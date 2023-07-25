@@ -4,6 +4,10 @@ from functools import partial
 from telegram.ext import ApplicationBuilder
 
 from c2_telegram_bot.command_handler_builder import CommandHandlerBuilder
+from c2_telegram_bot.commands.fast import Fast
+from c2_telegram_bot.commands.list_completed import ListCompleted
+from c2_telegram_bot.commands.remove_torrents import RemoveTorrents
+from c2_telegram_bot.commands.slow import Slow
 from c2_telegram_bot.environ_var import EnvironVar
 from c2_telegram_bot.message_handler_builder import MessageHandlerBuilder
 
@@ -24,10 +28,16 @@ def main():
 
     shell_exec_env = partial(shell_exec, env=EnvironVar("ENV").get())
 
-    torrent_host = TorrentHost(EnvironVar("TORRENT_HOST").get(), EnvironVar("TORRENT_PWD").get())
+    torrent_host = TorrentHost(
+        EnvironVar("TORRENT_HOST").get(), EnvironVar("TORRENT_PWD").get()
+    )
 
     command_handlers = [
         ListTorrents(shell_exec_env, torrent_host),
+        ListCompleted(shell_exec_env, torrent_host),
+        RemoveTorrents(shell_exec_env, torrent_host),
+        Fast(shell_exec_env, torrent_host),
+        Slow(shell_exec_env, torrent_host),
     ]
 
     command_help = CommandHelp(command_handlers)
@@ -36,10 +46,12 @@ def main():
     for hnd in command_handlers:
         application.add_handler(CommandHandlerBuilder().build(hnd))
 
-    application.add_handler(
-        MessageHandlerBuilder().build(MagnetLink(shell_exec_env, torrent_host))
-    )
-    application.add_handler(MessageHandlerBuilder().build(Echo()))
+    message_handlers = [
+        MagnetLink(shell_exec_env, torrent_host),
+        Echo(),
+    ]
+    for hnd in message_handlers:
+        application.add_handler(MessageHandlerBuilder().build(hnd))
 
     application.run_polling()
 

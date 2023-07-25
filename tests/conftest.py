@@ -6,8 +6,8 @@ from tests.helpers import async_return
 @pytest.fixture()
 def torrent_host(mocker):
     torrent_host = mocker.Mock()
-    torrent_host.host = 'host'
-    torrent_host.password = 'password'
+    torrent_host.host = "host"
+    torrent_host.password = "password"
     return torrent_host
 
 

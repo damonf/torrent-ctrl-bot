@@ -8,6 +8,4 @@ from c2_telegram_bot.message_handler_access import MessageHandlerAccess
 class MessageHandlerBuilder(HandlerBuilder):
     def build(self, message_handler: MessageHandlerInterface) -> MessageHandler:
         decorated = MessageHandlerAccess(message_handler)
-        return MessageHandler(
-            decorated.filter, self.create_handler_callback(decorated)
-        )
+        return MessageHandler(decorated.filter, self.create_handler_callback(decorated))

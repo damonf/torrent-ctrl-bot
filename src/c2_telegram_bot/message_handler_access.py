@@ -4,10 +4,9 @@ from c2_telegram_bot.interfaces.message_handler_interface import MessageHandlerI
 
 
 class MessageHandlerAccess:
-
     def __init__(self, message_handler: MessageHandlerInterface):
         self._msg_hnd = message_handler
-        self._user_id = EnvironVar('USER_ID').get()
+        self._user_id = EnvironVar("USER_ID").get()
 
     @property
     def filter(self):
